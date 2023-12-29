@@ -73,7 +73,7 @@ def main():
     sub_feedback = rospy.Subscriber("/reaching_goal/feedback",assignment_2_2023.msg.PlanningActionFeedback, on_feedback)
     
     
-    sub_feedback = rospy.Subscriber("/reaching_goal/result",assignment_2_2023.msg.PlanningActionResult, on_result)
+    sub_result = rospy.Subscriber("/reaching_goal/result",assignment_2_2023.msg.PlanningActionResult, on_result)
     
     
     feedback = assignment_2_2023.msg.PlanningFeedback()
