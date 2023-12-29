@@ -10,6 +10,7 @@ import actionlib
 import actionlib.msg
 import assignment_2_2023.msg
 from assignment_2_2023.msg import SetParametersAction
+from assignment_2_2023.msg import PlanningAction
 from tf import transformations
 from std_srvs.srv import *
 import time
@@ -19,9 +20,9 @@ import time
 
 def main():
     rospy.init_node('handle_parameter_client')
-    goal = assignment_2_2023.msg.SetParametersGoal 
+    goal = assignment_2_2023.msg.PlanningGoal()
     # Create the action client
-    client = actionlib.SimpleActionClient('server', SetParametersAction)
+    client = actionlib.SimpleActionClient('server', PlanningAction)
     
     # Wait for the server to be started
     client.wait_for_server()
@@ -31,10 +32,17 @@ def main():
         # Get the coordinates x and y from the user by keyboard
         x_position = float(input("Position X: "))
         y_position = float(input("Position Y: "))
-        goal.desired_x = x_position
-        goal.desired_y = y_position
+        goal.target_pose.pose.position.x = x_position
+        goal.target_pose.pose.position.y = y_position
         # Send the goal to the server
         client.send_goal(goal)
+        print("Enter 'y' if you want to cancel the goal just selected")
+        delete_char = input("Cancel? ")
+        if(delete_char == 'y'):
+            goal = assignment_2_2023.msg.PlanningGoal()
+            goal.cancelGoal()
+            client.send_goal(goal)
+            
         
     rospy.spin()
     
