@@ -22,7 +22,7 @@ def main():
     rospy.init_node('handle_parameter_client')
     goal = assignment_2_2023.msg.PlanningGoal()
     # Create the action client
-    client = actionlib.SimpleActionClient('server', PlanningAction)
+    client = actionlib.SimpleActionClient('/reaching_goal', PlanningAction)
     
     # Wait for the server to be started
     client.wait_for_server()
