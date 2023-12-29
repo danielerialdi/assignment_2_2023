@@ -62,7 +62,7 @@ add_message_files(
 
 ## Generate services in the 'srv' folder
 add_service_files(
-  FILES goalservice.srv
+  FILES goalservice.srv infoservice.srv
 #   Service1.srv
 #   Service2.srv
 )

@@ -13,29 +13,30 @@ import actionlib_msgs
 import assignment_2_2023.msg
 from assignment_2_2023.msg import PlanningAction
 from assignment_2_2023.msg import Info
-from assignment_2_2023.srv import goalservice, goalserviceResponse
+from assignment_2_2023.srv import infoservice
 from tf import transformations
 from std_srvs.srv import *
 import time
 
-def on_goal(goal_service):
-    global position_x, position_y
-    position_x = goal_service.goal.target_pose.pose.position.x
-    position_y = goal_service.goal.target_pose.pose.position.y
-    rospy.loginfo("Position is %d, %d", position_x, position_y)
+def on_info(info):
+    #global position_x, position_y
+    #position_x = goal_service.goal.target_pose.pose.position.x
+    #position_y = goal_service.goal.target_pose.pose.position.y
+    rospy.loginfo("Position is %f, %f, %f, %f", info.x, info.y, info.vel_linear_x, info.vel_angular_z)
+    
     
     
 def on_service_call(s):
-    global position_x, position_y
-    return goalserviceResponse(position_x, position_y)
+    #global position_x, position_y
+    return 
 
 def main():
     global position_x, position_y
     position_x = -100
     position_y = -100
     rospy.init_node("info_service")
-    service = rospy.Service("info_service", assignment_2_2023.msg.Info, on_service_call)
-    sub_goal = rospy.Subscriber("/odom", assignment_2_2023.msg.Info, on_info)
+    service = rospy.Service("info_service", infoservice, on_service_call)
+    sub_goal = rospy.Subscriber("/info_pos_vel", Info, on_info)
     rospy.spin()
 
 

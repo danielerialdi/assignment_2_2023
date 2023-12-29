@@ -47,14 +47,16 @@ def pub_info(msg):
     pos = msg.pose.pose.position
 	
 	# Get the velocity
-    vel = msg.twist.twist.linear
+    vel_linear_x = msg.twist.twist.linear.x
+    vel_angular_z = msg.twist.twist.angular.z
+    rospy.loginfo("Velocity: %f, %f", vel_linear_x, vel_angular_z)
     
     # info message
     info = Info()
     info.x = pos.x
     info.y = pos.y
-    info.vel_x = vel.x
-    info.vel_y = vel.y
+    info.vel_linear_x = vel_linear_x
+    info.vel_angular_z = vel_angular_z
     pub.publish(info)
 
 
