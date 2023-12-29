@@ -23,10 +23,10 @@ def trigger_response(request):
 
 def pub_info(msg):
     global pub
-    #global feedback
-    global hasGoal
+    # global feedback
+    # global hasGoal
     
-    feedback = assignment_2_2023.msg.PlanningFeedback()
+    # feedback = assignment_2_2023.msg.PlanningFeedback()
     
     # Get the position
     pos = msg.pose.pose.position
@@ -35,14 +35,16 @@ def pub_info(msg):
     vel = msg.twist.twist.linear
     
     #rospy.loginfo("Vel = %d, %d", vel.x, vel.y)
+    '''
     goal = assignment_2_2023.msg.PlanningGoal()
+    
     if(hasGoal):
         # Setting feedback
         feedback.actual_pose.position.x = pos.x
         feedback.actual_pose.position.y = pos.y
         server.publish_feedback(feedback)
         rospy.loginfo("Feedback: pos_x = %f, pos_y = %f Vel = %d, %d", feedback.actual_pose.position.x, feedback.actual_pose.position.y , vel.x, vel.y)
-    
+    '''
     
     
     # info message
@@ -52,7 +54,7 @@ def pub_info(msg):
     info.vel_x = vel.x
     info.vel_y = vel.y
     pub.publish(info)
-
+'''
 def handle_parameter_server(goal):
     global server
     global hasGoal
@@ -85,7 +87,7 @@ def handle_parameter_server(goal):
         
     return result
 
-'''
+
 
 def client():
 	# Create the action client
