@@ -1,5 +1,5 @@
 #request 
 ---
 #response
-float32 distance
-float32 mean_velocity
+float64 distance
+float64 mean_velocity

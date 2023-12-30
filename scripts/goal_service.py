@@ -18,23 +18,32 @@ from tf import transformations
 from std_srvs.srv import *
 import time
 
+
+
+def on_info(info):
+    global goal_x, goal_y
+    if(not 'goal_x' in globals()):
+        goal_x = info.x
+    if(not 'goal_y' in globals()):
+        goal_y = info.y
+        
+        
+
 def on_goal(goal_service):
-    global position_x, position_y
-    position_x = goal_service.goal.target_pose.pose.position.x
-    position_y = goal_service.goal.target_pose.pose.position.y
-    rospy.loginfo("Position is %d, %d", position_x, position_y)
+    global goal_x, goal_y
+    goal_x = goal_service.goal.target_pose.pose.position.x
+    goal_y = goal_service.goal.target_pose.pose.position.y
+    rospy.loginfo("Goal is %f, %f", goal_x, goal_y)
     
     
 def on_service_call(s):
-    global position_x, position_y
-    return goalserviceResponse(position_x, position_y)
+    global goal_x, goal_y
+    return goalserviceResponse(goal_x, goal_y)
 
 def main():
-    global position_x, position_y
-    position_x = -100
-    position_y = -100
     rospy.init_node("goal_service")
     service = rospy.Service("goal_service", goalservice, on_service_call)
+    sub_info = rospy.Subscriber("/info_pos_vel", Info, on_info)
     sub_goal = rospy.Subscriber("/reaching_goal/goal",assignment_2_2023.msg.PlanningActionGoal, on_goal)
     rospy.spin()
 
