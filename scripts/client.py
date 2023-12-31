@@ -24,7 +24,7 @@ def on_feedback(action_feedback):
     global canCancel
     canCancel = (action_feedback.status.status == action_feedback.status.ACTIVE)
     #rospy.loginfo("Feedback: pos_x = %f, pos_y = %f", action_feedback.feedback.actual_pose.position.x, action_feedback.feedback.actual_pose.position.y)
-    rospy.loginfo("Feedback Status %d", action_feedback.status.status)
+    # rospy.loginfo("Feedback Status %d", action_feedback.status.status)
     if(action_feedback.status.status == action_feedback.status.SUCCEEDED):
         rospy.loginfo("Goal reached")
     elif(action_feedback.status.status == action_feedback.status.PREEMPTING):
@@ -33,7 +33,7 @@ def on_feedback(action_feedback):
 def on_result(action_result):
     global canCancel
     canCancel = not(action_result.status.status == action_result.status.SUCCEEDED or action_result.status.status == action_result.status.PREEMPTED)
-    rospy.loginfo("Result Status %d", action_result.status.status)
+    #rospy.loginfo("Result Status %d", action_result.status.status)
 
 
 def pub_info(msg):
@@ -49,7 +49,7 @@ def pub_info(msg):
 	# Get the velocity
     vel_linear_x = msg.twist.twist.linear.x
     vel_angular_z = msg.twist.twist.angular.z
-    rospy.loginfo("Velocity: %f, %f", vel_linear_x, vel_angular_z)
+    # rospy.loginfo("Velocity: %f, %f", vel_linear_x, vel_angular_z)
     
     # info message
     info = Info()

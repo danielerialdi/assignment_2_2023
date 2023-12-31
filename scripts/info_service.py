@@ -62,7 +62,7 @@ def main():
     if(rospy.has_param("/window_size")):
         window_size = rospy.get_param("/window_size")
     else:
-        window_size = 30
+        window_size = 20
     window = []
     window_index = 0
     for i in range(window_size):
