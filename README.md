@@ -77,3 +77,10 @@ It is possible now to go inside the package directory and launch the simulation,
     roslaunch assignment_2_2023 assignment1.launch
 ```
 A new *lxterminal* terminal will appear; there it will be possible to set the goal for the robot.
+
+## Possible improvements
+Some ideas to make the simulator better:
+- Make the goal visible in the arena once the user sets it;
+- Restrict the possible input of the goal, by checking the boundaries of the arena and the presence of obstacles. Only rechable points should be a possible goal;
+- Make the `wall_follower.py` "smarter": now the robot turns on itself without considering in which direction the goal is, but just trying to avoid the obstacle;
+- Instead of taking a single goal, the robot could take an array of coordinates, such that the user could choose a path, instead of just the final goal.
