@@ -79,7 +79,7 @@ and in the root directory of the ros workspace we compile, using the command:
 ```
 The scripts should all be executable, but in case they were not this can be resolved by the command:
 ```
-chmod -x
+    chmod -x
 ```
 followed by the script name.  
 It is possible now to go inside the package directory and launch the simulation, via:
