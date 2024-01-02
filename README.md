@@ -13,6 +13,11 @@ There are 6 python scripts inside this repository. A brief explanation of those 
 - `client.py`: This is the node that implements the action client, such that the user can set the desired goal. It is even possible to cancel the coordinates just set in every moment, as long as the robot has not reched the target, yet. The robot position and velocity are also published by this node, as a custom message of type `Info`. A flowchart of this particular node is present in the following section;
 - `goal_service.py`: This is a service node that, when called, prints the last goal set by the user;
 - `info_service.py`: This is a service node that, when called, prints the distance from the robot to the target and the average linear velocity of the robot. This one is computed by making the mean value of `window_size` samples of velocities, that is a global parameter set in the launch file.
+<a/>  
+A launch file has been created, to launch the simulation and the 6 nodes all together. For the `client.py` node, a new *lxterminal* is created to be used as user interface.
+Also, in the launch file the global parameters are set.
+
+
 ## Flowchart of `client.py`
 
 ```mermaid
