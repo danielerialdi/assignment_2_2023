@@ -15,8 +15,14 @@ There are 6 python scripts inside this repository. A brief explanation of those 
 - `info_service.py`: This is a service node that, when called, prints the distance from the robot to the target and the average linear velocity of the robot. This one is computed by making the mean value of `window_size` samples of velocities, that is a global parameter set in the launch file. The information needed are taken from the topic */info_pos_vel*, that are published in `client.py`.
 <a/> 
 A launch file has been created, to launch the simulation and the 6 nodes all together. For the `client.py` node, a new <em>lxterminal</em> is created to be used as user interface.
-Also, in the launch file the global parameters are set.
+Also, in the launch file the global parameters are set.  
 
+
+The ROS generated graph for the nodes and the topics is shown below:
+
+![rosgraph](images/rosgraph.png)
+
+Now we can look at the structure of the `client.py` code.
 
 ## Flowchart of `client.py`
 
