@@ -94,14 +94,14 @@ def main():
                 x_position = float(x_position)
                 break
             except:
-                print("The input is not acceptable, please digit a number; enter the cooridinate or ctrl+z to exit")
+                print("The input is not acceptable, please digit a number")
         while(True):
             y_position = input("Target Y: ")
             try:
                 y_position = float(y_position)
                 break
             except:
-                print("The input is not acceptable, please digit a number; enter the cooridinate or ctrl+z to exit")
+                print("The input is not acceptable, please digit a number")
         # Set and send the goal to the server
         goal.target_pose.pose.position.x = x_position
         goal.target_pose.pose.position.y = y_position
@@ -115,10 +115,11 @@ def main():
         if(canCancel):
             print("Enter 'y' if you want to cancel the goal just selected")
             while(canCancel):
-                delete_char = input("Cancel? ")
+                delete_char = input("Cancel? ").lower()
                 if(delete_char == 'y'):
                     if(canCancel):
                         client.cancel_goal()
+                        break
                     else:
                         print("The goal has already been reached")
                 else:
