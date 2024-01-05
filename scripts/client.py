@@ -86,11 +86,22 @@ def main():
     client.wait_for_server()
 
     while not rospy.is_shutdown():
-	  
-        # Get the coordinates x and y from the user by keyboard
-        x_position = float(input("Target X: "))
-        y_position = float(input("Target Y: "))
-        
+    
+        # Get the coordinates x and y from the user by keyboard checking that the input is valid
+        while(True):
+            x_position = input("Target X: ")
+            try:
+                x_position = float(x_position)
+                break
+            except:
+                print("The input is not acceptable, please digit a number; enter the cooridinate or ctrl+z to exit")
+        while(True):
+            y_position = input("Target Y: ")
+            try:
+                y_position = float(y_position)
+                break
+            except:
+                print("The input is not acceptable, please digit a number; enter the cooridinate or ctrl+z to exit")
         # Set and send the goal to the server
         goal.target_pose.pose.position.x = x_position
         goal.target_pose.pose.position.y = y_position
@@ -103,15 +114,18 @@ def main():
         
         if(canCancel):
             print("Enter 'y' if you want to cancel the goal just selected")
-            delete_char = input("Cancel? ")
-            if(delete_char == 'y' and canCancel):
-                client.cancel_goal()
-            else:
-                print("The goal has already been reached")
+            while(canCancel):
+                delete_char = input("Cancel? ")
+                if(delete_char == 'y'):
+                    if(canCancel):
+                        client.cancel_goal()
+                    else:
+                        print("The goal has already been reached")
+                else:
+                    print("The input is not valid")
         else:
             print("The goal has already been reached")
-            
-        
+
     rospy.spin()
     
 
