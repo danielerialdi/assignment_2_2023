@@ -26,17 +26,19 @@ flowchart TB
     classDef grey fill:#606060
     Init["Initialization of the node,\nvariables, publisher, subscribers\n and Action client"]
     Init -->  WaitServer["Wait for server"]
-subgraph while["while loop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]
+subgraph while["while loop                                                    "]
     direction TB
-        WaitServer --> User1["Ask for coordinates\n and send goal"]
+        WaitServer --> User1["Ask for coordinates,\n check them\n and send goal"]
         User1 --> Delay["Wait for a small\namount of time"]
         Delay --> CanCancel{canCancel}:::grey
+        Message2-->CanCancel
         CanCancel --True--> User2["Ask user whether\nhe wants to preempt\nthe goal"] 
         CanCancel --False--> Message["Inform the user the\ngoal has been reached"]
-
-        User2 -->User3{User say yes\nand canCancel}:::grey
-        User3 --False-->Message
-        User3 --True-->GoalCancel["Cancel the goal"]
+        User2 -->User3{User say yes}:::grey
+        User3 --True-->User4{canCancel}:::grey
+        User3 --False-->Message2["Input is not valid"]
+        User4 --True-->GoalCancel["Cancel the goal"]
+        User4 --False-->Message
         GoalCancel-->User1
         Message-->User1
 end
