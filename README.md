@@ -1,13 +1,13 @@
 # Assignment report
 ## The objective  
-The assignment consists in implementing the logic of moving a robot in a 3D space using ROS. This is done in the *Gazebo* environment and the user has to provide a target using the terminal to make the robot move to the selected target location. Some of the code was provided in the first place and the requirements are the following.
+The assignment consists in implementing the logic to move a robot in a 3D space using ROS. The robot moves in the *Gazebo* environment while the user provides the target location using the terminal. Some of the code has been provided in the first place and the requirements are the following.
 > - (a) A node that implements an action client, allowing the user to set a target (x, y) or to cancel it. Try to use the feedback/status of the action server to know when the target has been reached. The node also publishes the robot position and velocity as a custom message (x,y, vel_x, vel_z), by relying on the values published on the topic /odom.
 > - (b) A service node that, when called, returns the coordinates of the last target sent by the user.
 > - (c) Another service node thatsubscribes to the robot’s position and velocity (using the custom message) and implements a server to retrieve the distance of the robot from the target and the robot’s average speed.
 > - A launch file to start the whole simulation. Use a parameter to select the size of the averaging window of node (c).
 
 ## Structure of the code
-There are 6 python scripts inside this repository. A brief explanation of those follow.
+There are 6 python scripts inside this repository. A brief explanation of those follows.
 - `go_to_point_service.py`: The service node that makes the robot go straight to the target.
 - `wall_follower.py`: >The service node that makes the robot avoid the obstacles found in the path for reaching the target. When a wall is found, the robot rotates until it has a straight path, clear of the obstacle. This makes the robot circumnavigate the obstacles that it finds on its way.
 - `bug_as.py`: The action server is implemented in this script. It also calls the other two nodes mentioned above: it makes the robot go in a straight line so that it reaches a target as long as there are no obstacles. When an obstacle is found, `wall_follower.py` logic takes action.
@@ -100,6 +100,6 @@ A new *lxterminal* terminal will be opened. From this terminal the user will be 
 ## Possible improvements
 Some ideas to improve the simulator:
 - Make the goal visible in the *Gazebo* arena once the user sets it;
-- Restrict the possible input of the goal, by checking the boundaries of the arena and the presence of obstacles. Only reachable locations should be allowed as goals;
+- Restrict the possible inputs of the goal, by checking the boundaries of the arena and the presence of obstacles. Only reachable locations should be allowed as goals;
 - Make the `wall_follower.py` "smarter": the current implementation always turns the robot in the same direction instead of considering the most convenient one to reach the target;
 - Instead of instructing the robot with a single goal, it could take an array of goals, such that the user could provide a path, instead of just the final goal.
