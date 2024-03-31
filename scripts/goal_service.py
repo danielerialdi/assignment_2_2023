@@ -1,5 +1,25 @@
 #! /usr/bin/env python
 
+"""
+.. module:: goal_service
+
+    :platform: Unix
+    :synopsis: Python module for assignment_2_2023 that implements a service to let
+               the user know where the goal has been set.
+    :description: In this module, a ROS node providing a service is implemented.
+                  The goal is set by the user in a new terminal by typing the x and y coordinates.
+                  The service is called by the user in a new terminal and it returns the last goal set by the user.
+                  
+                  Service:
+                      - `goal_service`
+                  
+                  Subscriber:
+                      - `/reaching_goal/goal`
+
+.. moduleauthor:: Daniele Rialdi daniele.rialdi@gmail.com
+
+"""
+    
 import rospy
 import actionlib
 import actionlib.msg
@@ -26,6 +46,17 @@ def on_info(info):
 '''        
 
 def on_goal(goal_service):
+    """ 
+    Callback for the subscriber to /reaching_goal/goal.
+    It stores the last goal set by the user.
+
+    :param goal_service: message that contains the goal set by the user
+    :type goal_service: assignment_2_2023.msg.PlanningActionGoal
+    :param goal_x: x coordinate of the goal
+    :type goal_x: float
+    :param goal_y: y coordinate of the goal
+    :type goal_y: float
+    """
     global goal_x, goal_y
     goal_x = goal_service.goal.target_pose.pose.position.x
     goal_y = goal_service.goal.target_pose.pose.position.y
@@ -33,12 +64,22 @@ def on_goal(goal_service):
     
     
 def on_service_call(s):
+    """ 
+    Callback of the service, that let the user know where the goal has been set.
+
+    :param s: service request
+    :type s: assignment_2_2023.srv.goalservice
+    :return: the last goal set by the user
+    :rtype: assignment_2_2023.srv.goalserviceResponse
+    """
     global goal_x, goal_y
     return goalserviceResponse(goal_x, goal_y)
 
 def main():
+    """
+    Main function that initializes the node and the service.
+    """
     global goal_x, goal_y
-    
     rospy.init_node("goal_service_node")
     
     # This init is used when the service is called before any goal is set by the user
@@ -47,9 +88,10 @@ def main():
     
     # Service used to communicate the last target set by the user
     service = rospy.Service("goal_service", goalservice, on_service_call)
-    
+
     # Subscribes /reaching_goal/goal to take the last goal coordinates set by the user
     sub_goal = rospy.Subscriber("/reaching_goal/goal", assignment_2_2023.msg.PlanningActionGoal, on_goal)
+    
     
     # See comments at the top of the file, alternative init
     # Subscribes the info message published by the client

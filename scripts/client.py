@@ -1,5 +1,29 @@
 #! /usr/bin/env python
 
+"""
+.. module:: client
+
+   :platform: Unix
+   :synopsis: Python module that implements a client that sends a goal
+              to the server and cancels it if the user wants to.
+   :description: In this module, a ROS node is implemented that sends a goal to the server and cancels it if the user wants to.
+                 The goal is set by the user by keyboard in a new terminal and it is sent to the server.
+                 The user can cancel the goal by typing **y** in the terminal where the client is running.
+                 The client also receives the current position and velocity of the robot and publishes them. It is able to cancel the goal only if the goal has not been reached yet; this is known thanks to the topics `/reaching_goal/feedback` and `/reaching_goal/result`.
+
+                 Publisher:
+                    - `/info_pos_vel`
+
+                 Subscribers:
+                    - `/odom`
+                    - `/reaching_goal/feedback`
+                    - `/reaching_goal/result`
+
+.. moduleauthor:: Daniele Rialdi daniele.rialdi@gmail.com
+
+"""
+
+
 import rospy
 from nav_msgs.msg import Odometry
 import actionlib
@@ -12,6 +36,15 @@ from assignment_2_2023.msg import Info
 
 
 def on_feedback(action_feedback):
+    """
+    Callback of the subscriber for feedback/status, that is used to check the status of the action server and to know if the robot is in the 'ACTIVE' status or not.
+    If so, the user is able to cancel the goal.
+
+    :param action_feedback: message that contains the feedback of the action server
+    :type action_feedback: assignment_2_2023.msg.PlanningActionFeedback
+    :param canCancel: flag that is set to True if the robot is in the 'ACTIVE' status
+    :type canCancel: bool
+    """
     global canCancel
     
     # We can preempt the robot only if the state machine is in the "ACTIVE" status
@@ -28,6 +61,15 @@ def on_feedback(action_feedback):
 
         
 def on_result(action_result):
+    """
+    Callback of the subscriber for result that is used to check the status of the action server and to know if the goal has been reached or not, simirarly to the feedback/status.
+    The goal can be canceled only if the robot's state machine is not in the "SUCCEEDED" or in the "PREEMPTED" status.
+
+    :param action_result: message that contains the result of the action server
+    :type action_result: assignment_2_2023.msg.PlanningActionResult
+    :param canCancel: flag that is set to True if the robot is in the 'ACTIVE' status
+    :type canCancel: bool
+    """
     global canCancel
     # We can preempt the robot only if the state machine is not in the "SUCCEEDED" or in the "PREEMPTED" status
     canCancel = not(action_result.status.status == action_result.status.SUCCEEDED or action_result.status.status == action_result.status.PREEMPTED)
@@ -36,6 +78,23 @@ def on_result(action_result):
 
 
 def on_odom(msg):
+    """
+    Callback of the subscriber for Odometry data, that is used to get the current position and velocity of the robot and to publish them.
+
+    :param msg: message that contains the Odometry data
+    :type msg: nav_msgs.msg.Odometry
+    :param pub_info: publisher that sends the info (x,y,vel_linear_x, vel_angular_z)
+    :type pub_info: Info
+    :param pos: current position of the robot
+    :type pos: geometry_msgs.msg.Point
+    :param vel_linear_x: current linear velocity of the robot
+    :type vel_linear_x: float
+    :param vel_angular_z: current angular velocity of the robot
+    :type vel_angular_z: float
+    :param info: message that contains the info (x,y,vel_linear_x, vel_angular_z)
+    :type info: Info
+    """
+
     global pub_info
     
     # Get the current position
@@ -58,6 +117,9 @@ def on_odom(msg):
 
 
 def main():
+    """
+    Main function that initializes the node, the publishers and the subscribers.
+    """
     # Declarations of global variables 
     global pub_info, canCancel
     canCancel = True
@@ -75,7 +137,8 @@ def main():
     
     # Subscriber for result
     sub_result = rospy.Subscriber("/reaching_goal/result",assignment_2_2023.msg.PlanningActionResult, on_result)
-    
+
+
     # Creating an instance of PlanningGoal
     goal = assignment_2_2023.msg.PlanningGoal()
     
