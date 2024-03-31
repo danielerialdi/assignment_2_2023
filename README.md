@@ -1,4 +1,6 @@
 # Assignment report
+## Documentation
+The documentation for the nodes `client.py`, `goal_service.py` and `info_service.py` is generated using Sphinx and it is accessible at https://danielerialdi.github.io/assignment_2_2023/.
 ## The objective  
 The assignment consists in implementing the logic to move a robot in a 3D space using ROS. The robot moves in the *Gazebo* environment while the user provides the target location using the terminal. Some of the code has been provided in the first place and the requirements are the following.
 > - (a) A node that implements an action client, allowing the user to set a target (x, y) or to cancel it. Try to use the feedback/status of the action server to know when the target has been reached. The node also publishes the robot position and velocity as a custom message (x,y, vel_x, vel_z), by relying on the values published on the topic /odom.
