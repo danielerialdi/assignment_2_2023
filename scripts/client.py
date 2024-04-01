@@ -116,6 +116,7 @@ def on_odom(msg):
     pub_info.publish(info)
 
 
+
 def main():
     """
     Main function that initializes the node, the publishers and the subscribers.
